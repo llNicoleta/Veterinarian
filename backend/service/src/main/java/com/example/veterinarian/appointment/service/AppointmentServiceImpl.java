@@ -1,30 +1,32 @@
 package com.example.veterinarian.appointment.service;
 
 import com.example.veterinarian.appointment.domain.Appointment;
-import com.example.veterinarian.appointment.repository.AppointmentRepository;
+import com.example.veterinarian.appointment.repository.AppointmentCrudRepository;
 import com.example.veterinarian.appointment.service.exception.AppointmentNotFound;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentCrudRepository appointmentCrudRepository;
 
     @Override
     public Iterable<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
+        return appointmentCrudRepository.findAll();
     }
 
     @Override
     public void save(Appointment appointment) {
-        appointmentRepository.save(appointment);
+        appointmentCrudRepository.save(appointment);
     }
 
     @Override
     public Appointment findAppointment(Long appointmentId) {
-        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        Appointment appointment = appointmentCrudRepository.findAppointmentById(appointmentId);
         if (appointment == null)
             throw new AppointmentNotFound(appointmentId);
         return appointment;
@@ -40,5 +42,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentToUpdate.setServices(appointment.getServices());
         appointmentToUpdate.setDiagnosis(appointment.getDiagnosis());
         appointmentToUpdate.setStatus(appointment.getStatus());
+    }
+
+    @Override
+    public Page<Appointment> getPagedAppointments(Pageable pageable) {
+        return appointmentCrudRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Appointment> getAppointmentsByDoctorName(Pageable pageable, String doctorName) {
+        return appointmentCrudRepository.findAllByDoctorName(pageable, doctorName);
     }
 }

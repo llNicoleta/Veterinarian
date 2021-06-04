@@ -3,6 +3,10 @@ package com.example.veterinarian.web.rest;
 import com.example.veterinarian.appointment.domain.Appointment;
 import com.example.veterinarian.appointment.service.AppointmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,22 @@ public class AppointmentController {
     @GetMapping()
     public Iterable<Appointment> getAllAppointments() {
         return appointmentService.getAllAppointments();
+    }
+
+    @GetMapping(value = "/paged")
+    Page<Appointment> getByPage(@PageableDefault(
+            size = 5,
+            sort = {"dateTimeAppointment"},
+            direction = Sort.Direction.DESC) Pageable pageable) {
+        return appointmentService.getPagedAppointments(pageable);
+    }
+
+    @GetMapping(value = "/paged/doctor/{doctorName}")
+    Iterable<Appointment> getAppointmentsForDoctor(@PageableDefault(
+            size = 5,
+            sort = {"dateTimeAppointment"},
+            direction = Sort.Direction.DESC) Pageable pageable, @PathVariable("doctorName") String doctorName) {
+        return appointmentService.getAppointmentsByDoctorName(pageable, doctorName);
     }
 
     @PostMapping()
