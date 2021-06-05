@@ -18,24 +18,13 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @GetMapping()
-    public Iterable<Appointment> getAllAppointments() {
-        return appointmentService.getAllAppointments();
-    }
-
-    @GetMapping(value = "/paged")
-    Page<Appointment> getByPage(@PageableDefault(
-            size = 5,
-            sort = {"dateTimeAppointment"},
-            direction = Sort.Direction.DESC) Pageable pageable) {
-        return appointmentService.getPagedAppointments(pageable);
-    }
-
-    @GetMapping(value = "/paged/doctor/{doctorName}")
-    Iterable<Appointment> getAppointmentsForDoctor(@PageableDefault(
-            size = 5,
-            sort = {"dateTimeAppointment"},
-            direction = Sort.Direction.DESC) Pageable pageable, @PathVariable("doctorName") String doctorName) {
-        return appointmentService.getAppointmentsByDoctorName(pageable, doctorName);
+    Page<Appointment> getAppointments(
+            @PageableDefault(
+                size = 5,
+                sort = {"dateTimeAppointment"},
+                direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(name = "doctor", required = false) String doctorName) {
+        return appointmentService.getPagedAppointments(pageable, doctorName);
     }
 
     @PostMapping()

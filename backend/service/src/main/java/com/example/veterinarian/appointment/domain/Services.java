@@ -15,14 +15,14 @@ import javax.persistence.Id;
 @Entity
 @Builder
 @AllArgsConstructor
-public class Service {
+public class Services {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String serviceName;
     private int servicePrice = 25;
 
-    public Service(String serviceName) {
+    public Services(String serviceName) {
         this.serviceName = serviceName;
     }
 }

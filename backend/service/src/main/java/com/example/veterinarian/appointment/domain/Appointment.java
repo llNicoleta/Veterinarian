@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,11 +23,11 @@ public class Appointment {
     private LocalDateTime dateTimeAppointment;
     private String doctorName;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private List<Service> services;
+    private List<Services> services;
     private String diagnosis;
     private Status status = Status.creata;
 
-    public Appointment(String animalName, LocalDateTime dateTimeAppointment, String doctorName, List<Service> services) {
+    public Appointment(String animalName, LocalDateTime dateTimeAppointment, String doctorName, List<Services> services) {
         this.animalName = animalName;
         this.dateTimeAppointment = dateTimeAppointment;
         this.doctorName = doctorName;

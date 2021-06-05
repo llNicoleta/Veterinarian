@@ -9,6 +9,5 @@ public interface AppointmentService {
     void save(Appointment appointment);
     Appointment findAppointment(Long appointmentId);
     void updateAppointment(Appointment appointment);
-    Page<Appointment> getPagedAppointments(Pageable pageable);
-    Page<Appointment> getAppointmentsByDoctorName(Pageable pageable, String doctorName);
+    Page<Appointment> getPagedAppointments(Pageable pageable, String doctorName);
 }
