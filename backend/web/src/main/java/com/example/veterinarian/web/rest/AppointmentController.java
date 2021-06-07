@@ -17,6 +17,17 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
+    @GetMapping("/all")
+    Iterable<Appointment> getAllAppointments() {
+        return appointmentService.getAllAppointments();
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/{id}")
+    Appointment getAppointmentById(@PathVariable Long id) {
+        return appointmentService.findAppointment(id);
+    }
+
     @GetMapping()
     Page<Appointment> getAppointments(
             @PageableDefault(
@@ -33,6 +44,7 @@ public class AppointmentController {
         return new ResponseEntity<>("Appointment saved successfully.", HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping()
     public ResponseEntity<String> updateAppointment(@RequestBody Appointment appointment) {
         appointmentService.updateAppointment(appointment);

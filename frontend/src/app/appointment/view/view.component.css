@@ -1,0 +1,34 @@
+.container {
+  left: 0;
+  width: 90vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination {
+  padding: 5rem 0;
+}
+
+.filter-container {
+  position: absolute;
+  top: 20vh;
+  left: 70vw;
+  width: 9rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formBtn {
+  padding-left: 1rem;
+}
+
+.no-appointments{
+  padding-top: 10vw;
+  text-align: center;
+}

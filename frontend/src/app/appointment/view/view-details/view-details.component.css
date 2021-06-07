@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 35vw;
+  align-items: center;
+  border-radius: 30px;
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.3));
+  padding: 1rem 1rem;
+  margin: 1rem 0 0 0;
+}
+
+.empty {
+  width: 10rem;
+}
+
+.title-container {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 0 5rem;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag {
+  margin-left: 10px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+}
+
+.status {
+  align-self: flex-end;
+}
+
+.diagnosis-container {
+  align-self: flex-start;
+}

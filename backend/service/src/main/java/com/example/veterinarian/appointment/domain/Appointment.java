@@ -25,7 +25,7 @@ public class Appointment {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Services> services;
     private String diagnosis;
-    private Status status = Status.creata;
+    private String status = "Creata";
 
     public Appointment(String animalName, LocalDateTime dateTimeAppointment, String doctorName, List<Services> services) {
         this.animalName = animalName;

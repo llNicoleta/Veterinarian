@@ -1,0 +1,115 @@
+<app-navigation></app-navigation>
+
+<div class="container">
+  <h3 class="tui-form__header tui-form__header_margin-top_none">
+    Update appointment
+  </h3>
+
+  <form [formGroup]="editForm" class="form" (ngSubmit)="onSubmit()">
+    <div class="tui-col_8">
+      <div class="input-group">
+
+        <div class="row">
+          <tui-input formControlName="animalName" class="b-form group-width">Nume animal<span
+            class="tui-required"></span></tui-input>
+          <div class="error"
+               *ngIf="editForm.get('animalName').invalid && (editForm.get('animalName').dirty || editForm.get('animalName').touched)">
+            <label *ngIf="editForm.get('animalName').errors.required">Nume animal required</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <tui-input formControlName="doctorName" class="b-form group-width">Nume doctor<span
+            class="tui-required"></span></tui-input>
+          <div class="error"
+               *ngIf="editForm.get('doctorName').invalid && (editForm.get('doctorName').dirty || editForm.get('doctorName').touched)">
+            <label *ngIf="editForm.get('doctorName').errors.required">Nume doctor required</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <tui-input-date-time class="group-width" formControlName="dateTime" timeMode="HH:MM"
+                               (change)="dateTimeChanged($event)">
+            Choose date and time<span class="tui-required"></span>
+          </tui-input-date-time>
+          <div class="error" *ngIf="!dateTimeValid">
+            <label>Data/Ora required</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <tui-multi-select
+            class="b-form group-width"
+            [formControl]="servicesControl"
+          >Servicii<span class="tui-required"></span>
+            <tui-data-list-wrapper
+              *tuiDataList
+              tuiMultiSelectGroup
+              [items]="allServices"
+            ></tui-data-list-wrapper>
+          </tui-multi-select>
+        </div>
+      </div>
+
+
+      <div class="select">
+        <div class="add group-width">
+          <button
+            tuiButton
+            type="button"
+            *ngIf="!signatureVisible"
+            class="link"
+            (click)="toggle()"
+            size="s"
+          >
+            Adauga serviciu
+          </button>
+          <ng-container *ngIf="signatureVisible">
+            <tui-input
+              class="text-width"
+              formControlName="newService"
+              tuiAutoFocus
+            >
+              Nume serviciu
+            </tui-input>
+            <button tuiButton type="button" size="s" (click)="addService()">
+              Adauga
+            </button>
+          </ng-container>
+        </div>
+
+      </div>
+      <tui-text-area
+        class="tui-space_bottom-4 group-width"
+        formControlName="diagnosis"
+        tuiTextfieldSize="s"
+        tuiAutoFocus
+        (change)="diagnosisChange($event)"
+      >
+        Diagnostic
+      </tui-text-area>
+
+      <tui-select [formControl]="status" class="group-width">
+        Status
+        <tui-data-list-wrapper
+          *tuiDataList
+          [items]="statuses.slice(0, statusesCount)"
+        ></tui-data-list-wrapper>
+      </tui-select>
+
+      <div>
+        <button
+          tuiButton
+          type="submit"
+          class="tui-space_right-3 tui-space_bottom-3 formBtn group-width btn"
+          appearance="primary"
+          size="s"
+          [disabled]="!dateTimeValid || editForm.invalid"
+        >
+          Update Appointment
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>

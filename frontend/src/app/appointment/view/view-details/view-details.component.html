@@ -1,0 +1,42 @@
+<div class="container">
+  <tui-tag class="tag status"
+           status="error"
+           [value]="appointment.status"
+           [autoColor]="true"
+  ></tui-tag>
+
+  <div class="title-container">
+    <h3>{{appointment.dateTimeAppointment }}</h3>
+    <div class="empty"></div>
+    <h2>{{appointment.animalName}}</h2>
+    <div class="empty"></div>
+    <h3>{{appointment.doctorName}}</h3>
+  </div>
+
+  <div class="tags">
+    <tui-tag *ngFor="let service of servicesSet"
+             class="tag"
+             status="primary"
+             [value]="service"
+             [autoColor]="true"
+    ></tui-tag>
+  </div>
+
+  <h3>Pret total: {{totalPrice | currency}}</h3>
+  
+  <div *ngIf="appointment.diagnosis != null && appointment.diagnosis.length > 0" class="diagnosis-container">
+    <h3>Diagnostic:</h3>
+    <p>{{appointment.diagnosis}}</p>
+  </div>
+
+  <button
+    (click)="editAppointment()"
+    tuiButton
+    type="button"
+    class="tui-space_right-3 tui-space_bottom-3"
+    appearance="secondary"
+    size="s"
+  >
+    Edit appointment
+  </button>
+</div>

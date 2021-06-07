@@ -1,0 +1,45 @@
+.container {
+  padding-top: 8vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: red;
+}
+
+.select {
+  width: 70vw;
+  display: flex;
+}
+
+.input-group {
+  width: 75vw;
+  display: flex;
+}
+
+.group-width {
+  width: 20vw;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.select-width{
+  width: 40vw;
+}
+
+.text-width {
+  width: 20vw;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  margin-top: 10rem;
+}

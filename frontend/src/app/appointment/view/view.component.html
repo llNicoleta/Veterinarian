@@ -1,0 +1,37 @@
+<app-navigation></app-navigation>
+
+<div class="no-appointments" *ngIf="appointments === undefined">
+  <h1>No appointments found.</h1>
+</div>
+
+<div class="filter-container" *ngIf="appointments !== undefined">
+  <form #selectForm="ngForm" (ngSubmit)="onSubmit(selectForm.form)" class="form">
+    <tui-select name="doctorName" [ngModel]="doctorName" #doctorNameControl="ngModel">
+      Choose a doctor
+      <tui-data-list-wrapper
+        *tuiDataList
+        [items]="doctorSet"
+      ></tui-data-list-wrapper>
+    </tui-select>
+
+    <button
+      tuiButton
+      type="submit"
+      class="tui-space_right-3 tui-space_bottom-3 formBtn "
+      appearance="primary"
+      size="s"
+    >
+      Filter
+    </button>
+  </form>
+</div>
+
+<div class="container" *ngFor="let appointment of appointments">
+  <app-view-details [appointment]="appointment"></app-view-details>
+</div>
+
+<tui-pagination class="pagination"
+                [length]="totalPages"
+                [index]="currentPage"
+                (indexChange)="goToPage($event)"
+></tui-pagination>

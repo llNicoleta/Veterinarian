@@ -46,6 +46,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Page<Appointment> getPagedAppointments(Pageable pageable, String doctorName) {
-        return doctorName == null ? appointmentCrudRepository.findAll(pageable) : appointmentCrudRepository.findAllByDoctorName(pageable, doctorName);
+        return doctorName == null || doctorName.isEmpty() ? appointmentCrudRepository.findAll(pageable) : appointmentCrudRepository.findAllByDoctorName(pageable, doctorName);
     }
 }
