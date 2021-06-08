@@ -22,6 +22,7 @@ export class CreateComponent implements OnInit {
 
   defaultServices = DefaultServices.services;
   servicesToAdd: Set<Services> = new Set<Services>();
+  serviceValid: boolean = true;
 
   newServiceName: string;
   signatureVisible = false;
@@ -51,7 +52,8 @@ export class CreateComponent implements OnInit {
   onSubmit() {
     this.servicesControl.value.forEach(value => this.servicesToAdd.add(new Services(value)));
 
-    this.appointment = new Appointment(this.addForm.value.animalName, this.dateTimeFormat(), this.addForm.value.doctorName, Array.from(this.servicesToAdd));
+    let doctorNameFormat = this.formatName(this.addForm.value.doctorName);
+    this.appointment = new Appointment(this.addForm.value.animalName, this.dateTimeFormat(), doctorNameFormat, Array.from(this.servicesToAdd));
 
     this.appointmentService.addAppointment(this.appointment).subscribe(() => this.message = "Appointment Added Successfully!");
     this.tuiNotificationService.show("Appointment has been added").subscribe();
@@ -62,13 +64,17 @@ export class CreateComponent implements OnInit {
   }
 
   addService(servicesControl: FormControl) {
-    this.servicesToAdd.add(this.addForm.get('newService').value);
-    this.tuiNotificationService.show(`Service ${this.addForm.get('newService').value} has been added.`).subscribe();
+    if(this.addForm.get('newService').value && this.addForm.get('newService').value.length > 0){
+      this.servicesToAdd.add(this.addForm.get('newService').value);
+      this.tuiNotificationService.show(`Service ${this.addForm.get('newService').value} has been added.`).subscribe();
+    } else {
+      this.serviceValid = false;
+      this.tuiNotificationService.show(`Service name must not be null or empty`).subscribe();
+    }
   }
 
   dateTimeChanged(event: any) {
     this.dateTimeValid = event.target.value && event.target.value.length === 17;
-    console.log(this.dateTimeValid)
   }
 
   dateTimeFormat(): string {
@@ -80,5 +86,13 @@ export class CreateComponent implements OnInit {
     let minutes = `${this.addForm.get('dateTime').value[1].minutes}`.length === 1 ? `0${this.addForm.get('dateTime').value[1].minutes}` : `${this.addForm.get('dateTime').value[1].minutes}`;
     let time = `${hours}:${minutes}:00`;
     return `${date}${time}`;
+  }
+
+  deformatName(name: string): string {
+    return name.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+  }
+
+  formatName(name: string): string {
+    return name.trim().replace(" ", "-").toLowerCase();
   }
 }

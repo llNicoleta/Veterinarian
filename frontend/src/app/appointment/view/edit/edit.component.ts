@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {TuiNotificationsService} from '@taiga-ui/core';
 import {TuiDay, TuiTime} from '@taiga-ui/cdk';
-import {DefaultStatuses, DefaultServices, IAppointment, Services} from '../../appointment.model';
+import {DefaultServices, DefaultStatuses, IAppointment, Services} from '../../appointment.model';
 import {APPOINTMENT_SERVICE, AppointmentService} from '../../appointment.service';
 
 
@@ -27,6 +27,7 @@ export class EditComponent implements OnInit {
   servicesControl: FormControl;
   status: FormControl = new FormControl();
 
+  doctorName: string;
   serviceNames: Array<string> = new Array<string>();
   allServices: Set<string>;
   servicesToUpdate: Set<Services> = new Set<Services>();
@@ -55,6 +56,8 @@ export class EditComponent implements OnInit {
     this.appointmentService.getAppointmentById(this.activatedRoute.snapshot.params['id']).subscribe((appointment: IAppointment) => {
       this.appointmentToUpdate = appointment;
 
+      this.doctorName = this.deformatName(appointment.doctorName);
+
       this.date = appointment.dateTimeAppointment.split("T")[0].split("-");
       this.time = appointment.dateTimeAppointment.split("T")[1].split(":");
 
@@ -72,7 +75,7 @@ export class EditComponent implements OnInit {
   initializeEditForm(appointment: IAppointment) {
     this.editForm = this.formBuilder.group({
       animalName: new FormControl(appointment.animalName, [Validators.required]),
-      doctorName: new FormControl(appointment.doctorName, [Validators.required]),
+      doctorName: new FormControl(this.doctorName, [Validators.required]),
       dateTime: new FormControl([new TuiDay(+this.date[0], +this.date[1], +this.date[2]), new TuiTime(+this.time[0], +this.time[1], 0, 0)]),
       newService: '',
       diagnosis: appointment.diagnosis,
@@ -82,9 +85,10 @@ export class EditComponent implements OnInit {
 
   onSubmit() {
     if (this.appointmentToUpdate !== undefined) {
-      this.appointmentToUpdate.animalName = this.editForm.value.animalName
-      this.appointmentToUpdate.doctorName = this.editForm.value.doctorName
-      this.appointmentToUpdate.diagnosis = this.editForm.value.diagnosis
+      this.appointmentToUpdate.animalName = this.editForm.value.animalName;
+
+      this.appointmentToUpdate.doctorName = this.formatName(this.editForm.value.doctorName);
+      this.appointmentToUpdate.diagnosis = this.editForm.value.diagnosis;
 
       this.appointmentToUpdate.dateTimeAppointment = this.dateTimeFormat();
       this.servicesControl.value.forEach(value => this.servicesToUpdate.add(new Services(value)));
@@ -114,7 +118,7 @@ export class EditComponent implements OnInit {
     this.dateTimeValid = event.target.value && event.target.value.length == 17;
   }
 
-  dateTimeFormat() : string {
+  dateTimeFormat(): string {
     let monthTemp = +this.editForm.get('dateTime').value[0].month + 1;
     let month = `${monthTemp}`.length === 1 ? `0${monthTemp}` : `${monthTemp}`;
     let day = `${this.editForm.get('dateTime').value[0].day}`.length === 1 ? `0${this.editForm.get('dateTime').value[0].day}` : `${this.editForm.get('dateTime').value[0].day}`;
@@ -125,4 +129,11 @@ export class EditComponent implements OnInit {
     return `${date}${time}`;
   }
 
+  deformatName(name: string): string {
+    return name.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+  }
+
+  formatName(name: string): string {
+    return name.trim().replace(" ", "-").toLowerCase();
+  }
 }

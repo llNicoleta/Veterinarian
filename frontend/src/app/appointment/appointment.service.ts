@@ -48,7 +48,6 @@ export class AppointmentService {
   }
 
   addAppointment(appointment: IAppointment): Observable<any> {
-    console.log(JSON.stringify(appointment));
     return this.http.post(this.baseUrl, JSON.stringify(appointment), httpOptions);
   }
 
