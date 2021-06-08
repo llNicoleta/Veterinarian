@@ -106,8 +106,12 @@ export class EditComponent implements OnInit {
   }
 
   addService(servicesControl: FormControl) {
-    this.servicesToUpdate.add(this.editForm.get('newService').value);
-    this.tuiNotificationService.show(`Service ${this.editForm.get('newService').value} has been added.`).subscribe();
+    if(this.editForm.get('newService').value && this.editForm.get('newService').value.length > 0){
+      this.servicesToUpdate.add(this.editForm.get('newService').value);
+      this.tuiNotificationService.show(`Service ${this.editForm.get('newService').value} has been added.`).subscribe();
+    } else {
+      this.tuiNotificationService.show(`Service name must not be null or empty`).subscribe();
+    }
   }
 
   diagnosisChange(event: any) {

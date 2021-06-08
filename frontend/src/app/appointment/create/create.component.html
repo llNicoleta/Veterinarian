@@ -32,8 +32,8 @@
                                (change)="dateTimeChanged($event)">
             Choose date and time<span class="tui-required"></span>
           </tui-input-date-time>
-          <div class="error" *ngIf="!dateTimeValid">
-            <label>Data/Ora required</label>
+          <div class="error" *ngIf="(addForm.get('dateTime').touched)">
+            <label *ngIf="!dateTimeValid">Data/Ora required</label>
           </div>
         </div>
 

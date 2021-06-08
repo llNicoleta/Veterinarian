@@ -22,11 +22,10 @@ export class CreateComponent implements OnInit {
 
   defaultServices = DefaultServices.services;
   servicesToAdd: Set<Services> = new Set<Services>();
-  serviceValid: boolean = true;
 
   newServiceName: string;
   signatureVisible = false;
-  dateTimeValid = true;
+  dateTimeValid = false;
 
   message: string;
 
@@ -43,7 +42,7 @@ export class CreateComponent implements OnInit {
     this.addForm = this.formBuilder.group({
       animalName: new FormControl('', [Validators.required]),
       doctorName: new FormControl('', [Validators.required]),
-      dateTime: new FormControl([null, new TuiTime(0, 0, 0, 0)], [Validators.required]),
+      dateTime: new FormControl([null, null], [Validators.required]),
       newService: ''
     });
   }
@@ -54,9 +53,11 @@ export class CreateComponent implements OnInit {
 
     let doctorNameFormat = this.formatName(this.addForm.value.doctorName);
     this.appointment = new Appointment(this.addForm.value.animalName, this.dateTimeFormat(), doctorNameFormat, Array.from(this.servicesToAdd));
-
-    this.appointmentService.addAppointment(this.appointment).subscribe(() => this.message = "Appointment Added Successfully!");
-    this.tuiNotificationService.show("Appointment has been added").subscribe();
+    if(this.dateTimeValid){
+      this.appointmentService.addAppointment(this.appointment).subscribe(() => this.message = "Appointment Added Successfully!");
+      this.tuiNotificationService.show("Appointment has been added").subscribe();
+    } else
+      this.tuiNotificationService.show("You must add a date").subscribe();
   }
 
   toggle() {
@@ -68,7 +69,6 @@ export class CreateComponent implements OnInit {
       this.servicesToAdd.add(this.addForm.get('newService').value);
       this.tuiNotificationService.show(`Service ${this.addForm.get('newService').value} has been added.`).subscribe();
     } else {
-      this.serviceValid = false;
       this.tuiNotificationService.show(`Service name must not be null or empty`).subscribe();
     }
   }
