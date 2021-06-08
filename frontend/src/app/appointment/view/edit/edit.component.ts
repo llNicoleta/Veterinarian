@@ -28,14 +28,14 @@ export class EditComponent implements OnInit {
   status: FormControl = new FormControl();
 
   doctorName: string;
-  serviceNames: Array<string> = new Array<string>();
-  allServices: Set<string>;
-  servicesToUpdate: Set<Services> = new Set<Services>();
-  defaultServices = DefaultServices.services;
+  serviceNames: Array<string> = new Array<string>(); // Services that are already selected in the appointment
+  allServices: Set<string>;  // servicesNames + the default services (for the multi-select)
+  servicesToUpdate: Set<Services> = new Set<Services>(); // updated set of services
+  defaultServices = DefaultServices.services; // default services
 
   signatureVisible = false;
   statuses = DefaultStatuses.statuses;
-  statusesCount: number = this.statuses.length
+  statusesCount: number = this.statuses.length;
   dateTimeValid = true;
 
   message: string
@@ -47,16 +47,15 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getData();
-    this.servicesControl = new FormControl(this.serviceNames);
-
+    this.getData(); // api get request + data formatting
+    this.servicesControl = new FormControl(this.serviceNames); // selects all the services of the appointment from the api
   }
 
   getData() {
     this.appointmentService.getAppointmentById(this.activatedRoute.snapshot.params['id']).subscribe((appointment: IAppointment) => {
       this.appointmentToUpdate = appointment;
 
-      this.doctorName = this.deformatName(appointment.doctorName);
+      this.doctorName = this.deformatName(appointment.doctorName); // ab-cd -> Ab Cd
 
       this.date = appointment.dateTimeAppointment.split("T")[0].split("-");
       this.time = appointment.dateTimeAppointment.split("T")[1].split(":");
@@ -80,14 +79,13 @@ export class EditComponent implements OnInit {
       newService: '',
       diagnosis: appointment.diagnosis,
     });
-    this.statusesCount = appointment.diagnosis && appointment.diagnosis.length > 0 ? 3 : 2;
   }
 
   onSubmit() {
     if (this.appointmentToUpdate !== undefined) {
       this.appointmentToUpdate.animalName = this.editForm.value.animalName;
 
-      this.appointmentToUpdate.doctorName = this.formatName(this.editForm.value.doctorName);
+      this.appointmentToUpdate.doctorName = this.formatName(this.editForm.value.doctorName); // Ab Cd -> ab-cd
       this.appointmentToUpdate.diagnosis = this.editForm.value.diagnosis;
 
       this.appointmentToUpdate.dateTimeAppointment = this.dateTimeFormat();
@@ -100,6 +98,8 @@ export class EditComponent implements OnInit {
       this.tuiNotificationService.show("Appointment has been updated").subscribe();
     }
   }
+
+  // Utilities
 
   toggle() {
     this.signatureVisible = !this.signatureVisible;

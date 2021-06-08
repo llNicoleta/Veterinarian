@@ -23,7 +23,6 @@ export class CreateComponent implements OnInit {
   defaultServices = DefaultServices.services;
   servicesToAdd: Set<Services> = new Set<Services>();
 
-  newServiceName: string;
   signatureVisible = false;
   dateTimeValid = false;
 
@@ -53,12 +52,11 @@ export class CreateComponent implements OnInit {
 
     let doctorNameFormat = this.formatName(this.addForm.value.doctorName);
     this.appointment = new Appointment(this.addForm.value.animalName, this.dateTimeFormat(), doctorNameFormat, Array.from(this.servicesToAdd));
-    if(this.dateTimeValid){
-      this.appointmentService.addAppointment(this.appointment).subscribe(() => this.message = "Appointment Added Successfully!");
-      this.tuiNotificationService.show("Appointment has been added").subscribe();
-    } else
-      this.tuiNotificationService.show("You must add a date").subscribe();
+    this.appointmentService.addAppointment(this.appointment).subscribe(() => this.message = "Appointment Added Successfully!");
+    this.tuiNotificationService.show("Appointment has been added").subscribe();
   }
+
+  // Utilities
 
   toggle() {
     this.signatureVisible = !this.signatureVisible;

@@ -14,7 +14,6 @@ export class ViewComponent implements OnInit {
   currentPage: number = 0;
   doctorName: string = "";
   doctorSet: Set<string> = new Set();
-  isAppointments: boolean = false;
   selectForm = new FormControl();
 
   constructor(@Inject(APPOINTMENT_SERVICE) private appointmentService: AppointmentService) {
