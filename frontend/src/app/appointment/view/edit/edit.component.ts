@@ -121,7 +121,7 @@ export class EditComponent implements OnInit {
     let date = `${this.editForm.get('dateTime').value[0].year}-${month}-${day}T`;
     let hours = `${this.editForm.get('dateTime').value[1].hours}`.length === 1 ? `0${this.editForm.get('dateTime').value[1].hours}` : `${this.editForm.get('dateTime').value[1].hours}`;
     let minutes = `${this.editForm.get('dateTime').value[1].minutes}`.length === 1 ? `0${this.editForm.get('dateTime').value[1].minutes}` : `${this.editForm.get('dateTime').value[1].minutes}`;
-    let time = `${this.editForm.get('dateTime').value[1].hours}:${this.editForm.get('dateTime').value[1].minutes}:00`
+    let time = `${hours}:${minutes}:00`;
     return `${date}${time}`;
   }
 

@@ -78,7 +78,7 @@ export class CreateComponent implements OnInit {
     let date = `${this.addForm.get('dateTime').value[0].year}-${month}-${day}T`;
     let hours = `${this.addForm.get('dateTime').value[1].hours}`.length === 1 ? `0${this.addForm.get('dateTime').value[1].hours}` : `${this.addForm.get('dateTime').value[1].hours}`;
     let minutes = `${this.addForm.get('dateTime').value[1].minutes}`.length === 1 ? `0${this.addForm.get('dateTime').value[1].minutes}` : `${this.addForm.get('dateTime').value[1].minutes}`;
-    let time = `${this.addForm.get('dateTime').value[1].hours}:${this.addForm.get('dateTime').value[1].minutes}:00`
+    let time = `${hours}:${minutes}:00`;
     return `${date}${time}`;
   }
 }
